@@ -214,6 +214,7 @@ We now have a lot more information at our fingertips than we did a few minutes a
 
 ```{r}
 
+flights <- nycflights13:: flights 
 
 
 ```
@@ -221,6 +222,28 @@ We now have a lot more information at our fingertips than we did a few minutes a
 
 ```{r}
 
+srqflights %>% 
+  filter(origin == "JFK")
+
+```
+
+
+```{r}
+srqflights %>% 
+  filter(origin == "LGA",
+       distance >= 1,000)
+
+test2<-flights %>% filter( distance >= 1000) %>%
+   group_by(origin) %>% 
+  summarise (avg_distance = mean(distance, na.rm = TRUE))
+
+
+```
+
+
+```{r}
+ group_by(carrier, flight, origin) %>% 
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE))
 
 
 ```
@@ -228,21 +251,40 @@ We now have a lot more information at our fingertips than we did a few minutes a
 
 ```{r}
 
+srqflights %>% 
+  mutate(newcolumn= "Hi")
+
+srqflights <- srqflights %>% 
+ mutate (is_delay= if_else (dep_delay > 0, "YES", "NO"))
 
 
-```
+srqflights %>%  
+  group_by(is_delay) %>% 
+  summarise (flight_count = n()) %>% 
+  mutate (pct=flight_count/ sum (flight_count) * 100)
 
+ggplot(metro_pop, aes(x = reorder(geography, pop_estimate2016), y = pop_estimate2016)) + 
+  geom_col(color = "#9ebcda", fill = "#9ebcda")+
+  coord_flip()+
+  scale_y_continuous(name = "Population", labels = scales::comma)+
+  scale_x_discrete(name = "County")
 
-```{r}
+test<- srqflights %>% 
+  group_by(carrier, flight, origin) %>% 
+  summarise(avg_delay = mean(dep_delay, na.rm = TRUE))
 
+test1<- srqflights %>% 
+  group_by(delay,flight,origin)
+summarise()
 
+ggplot(test2, aes(x = reorder(origin, avg_distance), y = avg_distance)) + 
+  geom_col(color = "#9ebcda", fill = "#9ebcda")+
+  coord_flip()+
+  scale_y_continuous(name = "distance", labels = scales::comma)+
+  scale_x_discrete(name = "origin")
 
-```
-
-
-```{r}
-
-
+ git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
 
 ```
 
